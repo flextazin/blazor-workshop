@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazingPizza.Server
 {
-    public class PizzaStoreContext : DbContext
+    public class PizzaStoreContext : IdentityDbContext
     {
         public PizzaStoreContext()
         {
@@ -23,6 +24,7 @@ namespace BlazingPizza.Server
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // Configuring a many-to-many special -> topping relationship that is friendly for serialisation
             modelBuilder.Entity<PizzaTopping>().HasKey(pst => new { pst.PizzaId, pst.ToppingId });
             modelBuilder.Entity<PizzaTopping>().HasOne<Pizza>().WithMany(ps => ps.Toppings);
